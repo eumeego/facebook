@@ -358,7 +358,7 @@ is needed from Facebook, scope parameters can be set.\cite{facebookDevAuth}
 
 Figure \ref{fig:authorization} details how authorization and
 authentication take place with OAuthDialog. The \textit{app server}
-show cases the server on which the app is actually
+illustrates the server on which the app is actually
 running. \textit{Facebook} represents all the Facebook servers, on
 which perform authentication and authorization. The \textit{OAuth
   Dialog} runs on the browser of the client who is going to use the
@@ -396,21 +396,87 @@ URL by which the Graph API can be accessed. However, Facebook's
 and in this case, the access token is included automatically.
 
 
-
-
-\subsection{Data from social graph (JSON-Objects)}
-\label{sec:json-objects}
-
-
-
 \section{Methodology}
 \label{sec:method}
+In this section, the quiz is described as well as its
+implementation. Then, it is explained how data are collected for
+further analysis and how they can be evaluated.
 
 \subsection{The Quiz}
 \label{sec:quiz}
+The quiz contains questions in German about dentistry health facts. Participants are asked 5
+questions taken from a pool of 20 questions. Each question has 4
+possible answers. Multiple selection is possible, but at least one
+answer is correct. A question is answered correctly, if each correct
+and no incorrect answer have been selected. Figure \ref{fig:quiz}
+shows how the quiz looks like. 
 
-\subsection{Data collection and evaluation}
+
+\begin{figure}
+  \includegraphics[height=3in]{../img/fbquiz.png}
+ \caption{The quiz.}
+\label{fig:quiz}
+\end{figure}
+
+
+The quiz is competitive. After the quiz is completed, user are told
+how good they were in comparison to other participants and to their
+friends. As shown in figure \ref{fig:solution}, for each question the
+correct solution is given. A user can also invite friends to
+participate by clicking on the appropriate image. This is demonstrated in
+figure \ref{fig:invite}.
+
+
+\begin{figure}
+  \includegraphics[width=3.5in]{../img/fbsolution.png}
+  \caption{Solution of a question.}
+\label{fig:solution}
+\end{figure}
+
+
+
+\begin{figure}
+  \includegraphics[width=3.5in]{../img/fbinvite.png}
+  \caption{This screenshot shows how friends can be invited.}
+\label{fig:invite}
+\end{figure}
+
+\subsection{Implementation}
+\label{sec:implementation}
+The quiz-application detailed in the last section makes use of
+Facebook's php-\ac{sdk} and JavaScript-\ac{sdk}. It requires
+permissions for \textit{user$\_$birthday} and \textit{publish$\_$stream}.
+Data used by the quiz are stored in a MySQL-database, tables have the
+following contents:
+\begin{itemize}
+\item \textbf{User} - entries are created for each user who participates as
+well as for each of a user's friends. A flag details if user
+participated or not.
+\item \textbf{Friendships} - creates entries for each friendship found in
+users' friend lists.
+\item \textbf{Questions} - contains the questions of the quiz.
+\item \textbf{Answers} - contains the possible answers and a flag to mark them
+as correct or false.
+\item \textbf{Given answers} - stores each answer given by a user.
+\item \textbf{User score} - stores the score user had in the quiz.
+\item \textbf{Correct answered questions} - stores which questions were correct
+answered by which user.
+\end{itemize}
+
+The database queries are performed with the PHP
+pear\footnote{http://pear.php.net/}-package. The script which performs
+the queries uses few files: The index.php manages the application
+flow. The library.php contains all the functions needed, and quiz.php,
+question.php, and quizResult.php display the quiz as well as the
+correct solution and the feature to invite friends.
+
+
+\subsection{Data collection}
 \label{sec:data-coll-eval}
+
+\subsection{Data evaluation}
+\label{sec:data-evaluation}
+
 
 
 
@@ -419,18 +485,18 @@ and in this case, the access token is included automatically.
 \label{sec:results}
 
 
-\begin{center}
-\begin{table}
-\label{tab:coruser}
-\begin{tabular}{l | c c c}
-a & a & a & a \\
+% \begin{center}
+% \begin{table}
+% \label{tab:coruser}
+% \begin{tabular}{l | c c c}
+% a & a & a & a \\
 
-\hline
-b & b & b & b
-\end{tabular}
-\caption{dummy}
-\end{table}
-\end{center}
+% \hline
+% b & b & b & b
+% \end{tabular}
+% \caption{dummy}
+% \end{table}
+% \end{center}
 
 
 
