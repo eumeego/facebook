@@ -445,41 +445,96 @@ figure \ref{fig:invite}.
 \label{sec:implementation}
 The quiz-application detailed in the last section makes use of
 Facebook's php-\ac{sdk} and JavaScript-\ac{sdk}. It requires
-permissions for \textit{user$\_$birthday} and \textit{publish$\_$stream}.
-Data used by the quiz are stored in a MySQL-database, tables have the
-following contents:
+permissions for \textit{user$\_$birthday} and
+\textit{publish$\_$stream}.
+Data used by the quiz are stored in a MySQL-database, and php scripts
+handle the application flow. \textit{index.php} maintains calls of
+scripts printing the quiz (\textit{quiz.php}, \textit{question.php}), and displaying
+the correct solution as well as the opportunity to invite friends
+after completion of the quiz
+(\textit{quizResult.php}). \textit{library.php} contains all the
+functions needed.
+
+
+\subsubsection{Database schema}
+\label{sec:database-schema}
+The database queries are performed with PHP
+pear\footnote{http://pear.php.net/}-package. The following tables exist:
 \begin{itemize}
 \item \textbf{User} - entries are created for each user who participates as
 well as for each of a user's friends. A flag details if user
 participated or not.
-\item \textbf{Friendships} - creates entries for each friendship found in
+\item \textbf{Friends} - creates entries for each friendship found in
 users' friend lists.
 \item \textbf{Questions} - contains the questions of the quiz.
 \item \textbf{Answers} - contains the possible answers and a flag to mark them
 as correct or false.
-\item \textbf{Given answers} - stores each answer given by a user.
-\item \textbf{User score} - stores the score user had in the quiz.
-\item \textbf{Correct answered questions} - stores which questions were correct
-answered by which user.
+\item \textbf{GivenAnswers} - stores each answer given by a user.
+\item \textbf{UserScore} - stores the score user had in the quiz.
+\item \textbf{CorrectAnsweredQuestions} - stores which questions were correct
+answered by which user, and which were not.
 \end{itemize}
 
-The database queries are performed with the PHP
-pear\footnote{http://pear.php.net/}-package. The script which performs
-the queries uses few files: The index.php manages the application
-flow. The library.php contains all the functions needed, and quiz.php,
-question.php, and quizResult.php display the quiz as well as the
-correct solution and the feature to invite friends.
+\subsubsection{Application flow}
+\label{sec:application-flow}
+When a user enters, the \textit{OAuth Dialog} is started. Then, the user data
+including gender, birthday, name, Facebook-ID are stored together with
+a timestamp, and column \textit{has-used-app} is set to 1. In
+addition, each user's friends are also stored and column
+\textit{has-used-app} is set to 0. Then, friendships are stored in the
+table \textit{friends}. Next, the quiz is created by randomly choosing
+five questions from the questions table and requiring the answers. To
+make the questions more attractive, the name of an image convenient to
+the questions topic is also stored in the questions table, and this
+image is placed on the left side of each question. Since multiple
+selection is possible, before the answers, which are also queried from
+the MySQL database, checkboxes are placed before each answer. 
 
+As soon as a user completed the quiz, evaluation starts by checking
+which questions were answered correctly and by computing the final
+score. Due to multiple selection, user answers are stored in
+an multidimensional array and compared with another multidimensional
+array containing the correct solution and created from the database.
+The given answers are then stored, and in addition, in another table
+(\textit{correctAnsweredQuestions)}
+it is only stored which questions were correct and incorrect answered.
+Some user join the quiz multiple times, and for this reason, each
+score they had is stored in a score table. The user table is also
+changed by entering or updating the average score, computed from each all the scores stored
+in the score table. Then, by using the Java Script \ac{sdk}, the user
+get the option to post the results onto their Facebook wall.
 
-\subsection{Data collection}
-\label{sec:data-coll-eval}
+In order to make the whole thing challenging, it
+is then computed how high the user's score is compared to the friends
+and to all the other users. 
+In addition, the correct solutions are given, and if a user knew the
+right answer, a green check is placed left to the question. Otherwise,
+a red cross is displayed at the same place. At least, the table with
+the friendships and table \textit{correctAnsweredQuestions} are used
+to identify friends  which answered the question correctly. Images of
+them are placed beyond each question's solution together with the
+information that those friends knew the right solution. 
+In the end, users get the chance to invite friends to the app to
+challenge them. For this reason, each friend's picture is added and
+user can click at them. On click, a pre-defined function from
+Facebook's Java Script \ac{sdk} is called to perform the invitation. 
+
 
 \subsection{Data evaluation}
 \label{sec:data-evaluation}
+Data evaluation is also performed by using the MySQL tables, and
+PHP. In addition, the dot
+language\footnote{http://www.graphviz.org/Documentation.php} is used
+to create graphs. 
 
-
-
-
+The evaluation scripts are maintained by \textit{main.php}. A user
+class represents Facebook's social graph internally. Properties of
+user objects equal the \textit{user}-table's properties, and a user's
+friendships are represented by a list of references to corresponding
+user objects. The whole set of users is maintained by
+\textit{main.php}, where they are stored in an array. Class \textit{Graph}
+allows for output of various graphs in dot-language created from the
+internal social graph. 
 
 \section{Results}
 \label{sec:results}
