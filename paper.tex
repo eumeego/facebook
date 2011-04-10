@@ -385,8 +385,8 @@ login data are sent to the application, thus, this is how Facebook
 establishes a trust relation. 
 If the user authorizes the application, an \textit{authorization code} is returned and
 the user is redirected to the application, to which the
-\textit{authorization code} is forwarded. When registering the
-application, an \textit{application secret} code has been
+\textit{authorization code} is forwarded. During registration of the
+application, an \textit{application secret} code was
 created. In order to authenticate the application, the
 \textit{authorization code} and the \textit{application secret} have
 to be sent to Facebook's \textit{Graph API Token Endpoint}. Facebook
@@ -394,6 +394,51 @@ then returns an \textit{access token}, which can be included in the
 URL by which the Graph API can be accessed. However, Facebook's
 \ac{sdks} also provide functions to perform calls to the Graph API,
 and in this case, the access token is included automatically.
+
+\subsection{Graphs with DOT language}
+\label{sec:graph-repr-with}
+The \ac{dot} language allows for plain text description of
+graphs. There are few programs that can process \ac{dot} graphs, most
+of them are part of the
+\textit{Graphviz}\footnote{http://www.graphviz.org}-package. 
+The language allows for directed and undirected graphs, attributes can
+be set and colors as well as different shapes for nodes and edges can
+be used. The basic syntax is very easy, the graph shown in figure
+\ref{fig:dot} has the \ac{dot}-code given in listing \ref{list:dot}.
+
+\begin{lstlisting}[caption=A very simple DOT-Graph,
+  label=list:dot]{}{
+ digraph myGraph {
+     a -> b;
+}
+\end{lstlisting}
+
+\begin{figure}
+  \includegraphics[width=0.4in]{../img/ab.png}
+\caption{A very simple graph in \ac{dot}-language.}
+\label{fig:dot}
+\end{figure}
+
+Labels and colors can be added by defining the node in the head of the
+graph description. An example is detailed in listing \ref{list:dot2}, and
+the corresponding graph is given in figure \ref{fig:dot2}.
+
+
+\begin{figure}
+  \includegraphics[width=0.4in]{../img/graphDot.png}
+\caption{A very simple graph with node a blue boxed and fontcolor set
+  to red.}
+\label{fig:dot2}
+\end{figure}
+
+
+\begin{lstlisting}[caption=A very simple DOT-Graph,
+  label=list:dot2]{}{
+ digraph myGraph {
+a [label="Foo", color="blue", shape=box, fontcolor="red"];
+     a -> b;
+}
+\end{lstlisting}
 
 
 \section{Methodology}
@@ -426,20 +471,6 @@ correct solution is given. A user can also invite friends to
 participate by clicking on the appropriate image. This is demonstrated in
 figure \ref{fig:invite}.
 
-
-\begin{figure}
-  \includegraphics[width=3.5in]{../img/fbsolution.png}
-  \caption{Solution of a question.}
-\label{fig:solution}
-\end{figure}
-
-
-
-\begin{figure}
-  \includegraphics[width=3.5in]{../img/fbinvite.png}
-  \caption{This screenshot shows how friends can be invited.}
-\label{fig:invite}
-\end{figure}
 
 \subsection{Implementation}
 \label{sec:implementation}
@@ -522,23 +553,215 @@ Facebook's Java Script \ac{sdk} is called to perform the invitation.
 
 \subsection{Data evaluation}
 \label{sec:data-evaluation}
-Data evaluation is also performed by using the MySQL tables, and
+Data evaluation is performed by using the MySQL tables, and
 PHP. In addition, the dot
 language\footnote{http://www.graphviz.org/Documentation.php} is used
 to create graphs. 
 
+
 The evaluation scripts are maintained by \textit{main.php}. A user
-class represents Facebook's social graph internally. Properties of
-user objects equal the \textit{user}-table's properties, and a user's
-friendships are represented by a list of references to corresponding
-user objects. The whole set of users is maintained by
-\textit{main.php}, where they are stored in an array. Class \textit{Graph}
-allows for output of various graphs in dot-language created from the
-internal social graph. 
+class represents Facebook's social graph internally. Its properties
+are user's Facebook ID, registration date, average score, a list of
+friends, and a list of IDs to whom the user may have spread the
+application. Friendships are represented by a list of references to corresponding
+user objects, and names of users' can be made anonymous if needed.
+
+A user is supposed to have spread the app if he/she has
+a friend who used the application and who belongs to a \textit{new}
+network. Such persons are found by recursively checking if an user of
+the application has friends, who also used the application, and whose friends
+also used the app, but are not in his/her list of friends, and also not in the list of the person
+who originally spread the application. In this case, the corresponding
+friend will be marked as a person who spread the application, and the
+recursion starts by letting the friend become the analyzed user.
+Since it is not clear, why a person started to use an application, the
+script also allows for identification of users who have friends 
+who also participated in the application. 
+
+User names are made anonymous by substituting their names with a
+random name selected from a list of popular baby names
+from 2009, taken from \url{http://www.ssa.gov/cgi-bin/popularnames.cgi}.   
+For each gender, hundred names are stored in an array, and if the
+gender is set, a name of same gender is chosen. Otherwise, the name is
+taken randomly. The name of the person who spread the application
+originally is always set to \textit{Alexandra}.
+
+Output options are a \ac{csv}-file containing metrics calculated from
+the internal social graph as well as various graphs in dot language, created
+from the internal social graph, too.
+% Properties of
+% user objects are in the style of the \textit{user}-table's properties, and a user's
+% . The whole set of users is maintained by
+% \textit{main.php}, where they are stored in an array. Class \textit{Graph}
+% allows for output of various graphs in dot-language created from the
+% internal social graph. 
+
+
+
+
 
 \section{Results}
 \label{sec:results}
+A total of n=48 users participated in the quiz. 5505 users have been
+stored in the user table. Thus, on average each user brought on
+average 114.7 \textit{new} people, who could read about the application
+in their news stream. 15 
 
+\subsection{Characteristics}
+\label{sec:characteristics}
+
+The characteristics discussed in this section consider data of users
+that are still registered (n=37). 
+
+\subsubsection{Age and gender}
+\label{sec:age-gender}
+$59 \%$ of the registered user are female, $41 \%$ of the participants
+are male. Table \ref{tab:agegender} shows classification of the users
+by age and gender. It can be seen, that most users ( 70 \%) were at
+the age of 25-34. Only few ($8.4 \%$) were older, and only 21.4 \%
+were younger.
+
+\begin{center}
+\begin{table}
+\label{tab:agegender}
+\begin{tabular}{l | c c c c}
+Gender\textbackslash Age  & 13-17 & 18-24 & 25-34 & 45-54 \\
+\hline
+female  & 2.7 \% & 16 \% & 35 \% & 5.4 \% \\
+male & 0 \% & 2.7 \% & 35 \% & 2.7 \% 
+\end{tabular}
+\caption{Table shows classification of users by age and gender.}
+\end{table}
+\end{center}
+
+\subsubsection{Demography}
+\label{sec:demographie}
+Table \ref{tab:countries} details the origin of the users and table
+\ref{tab:languages} the languages in which the participants use Facebook.
+As it seems obvious for a quiz in German, most visitors came from Germany.
+
+\begin{center}
+\begin{table}
+\label{tab:countries}
+\begin{tabular}{l | c }
+Country  & Visitors \\
+\hline
+Germany  & 32 \\
+United Kingdom & 2 \\
+Israel & 1 \\
+United States of America & 1 \\
+Austria & 1 \\
+\end{tabular}
+\caption{Table shows where the users are from.}
+\end{table}
+\end{center}
+
+\begin{center}
+\begin{table}
+\label{tab:languages}
+\begin{tabular}{l | c }
+Languages   & Visitors \\
+\hline
+German  & 25 \\
+English (UK) & 7 \\
+English (US) & 4 \\
+Greek  & 1 \\
+\end{tabular}
+\caption{Languages of the participants.}
+\end{table}
+\end{center}
+
+
+\subsection{Spreading of the quiz}
+\label{sec:distribution-quiz}
+In this section, graphs illustrating how the
+application spread are presented. The original user names collected from Facebook were made anonymous
+before the graphs were printed (see section \ref{sec:data-evaluation}). Friendships are
+represented by directed edges: If user A has user B in the friend list, an
+arrow exists targeting user B.
+
+Figure \ref{fig:allUsers} represents each user stored in user
+table as node, and friendships of those who participated in the
+application as directed edges. Names of users who participated in the quiz are distinguished by
+red font color. The main purpose of this figure is to visualize the
+whole setting and to give an imagination of how many \textit{new}
+people on Facebook could have read about the application in their 
+news stream. In addition, the figure shows few participants, who are
+not connected to the larger network of the 
+person who started to spread the application.
+
+\begin{figure}
+  \includegraphics[width=5.2in]{../img/allUserTree.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:allUsers}
+\end{figure}
+
+In the following, only user who participated in the quiz are
+considered. In Figure \ref{fig:spreading} nodes of people, who are
+connector between two networks, have a red font color. The number of
+friends and the average score from quiz are also shown. 
+It can be obtained that in three cases, there are several connections (friendships)
+between the people who participated and belong to a new network. For
+instance, several connections exist between users \textit{Evan},
+\textit{Diego}, \textit{Isabelle}, \textit{Chase}, and \textit{Gebrielle}.
+\textit{Nicholas} and \textit{Chase}, who are friends with those
+people mentioned above, also are friends with \textit{Ethan},
+and \textit{Josiah}.  Then, \textit{Faith} is friend with
+\textit{Owen} and \textit{Colton}, who also know each other, and
+\textit{Mariah} and \textit{Sydney} have \textit{Alexis} as a common
+friend. The figure also shows that most people who spread the
+application had a score greater than or equal to three. At least, it
+can be obtained that half of the people who spread the application
+had less than hundred friends, which is less than the mean on
+Facebook, i.e. 130 friends \cite{ref:facebookStats}.
+
+In the addendum (section \ref{sec:addendum}), two further graphs are
+shown. In figure \ref{fig:friendsScored}, the background color
+represents a user's average score. User with a darker background had a
+higher score with those having a lighter background color. 
+Figure \ref{fig:friendsFilled} visualizes the amount of friends in the
+by giving users having many friends a dark and those having fewer
+friends a lighter background color. 
+
+
+\begin{figure}
+  \includegraphics[width=5in]{../img/spreading.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:spreading}
+\end{figure}
+
+Two tables also located in the addendum describe to how many
+other participants friendships existed (see table \ref{tab:spread} and
+\ref{tab:nospread}), and to how many people of a
+\textit{new} network the application was (probably) distributed by the
+user. $26$ participants were on average $2.54$ friends with other
+participants and those, who spread the application, seemed to have
+more connections to other people than those who did not.
+The average score of people connected to others was $3.02$. It was
+higher than the average score of people not connected to others ($2.41$).
+People not connected to further participants had fewer friends on average ($106.8$)
+than the connected participants ($138.83$).
+
+Table \ref{tab:nouser} details how many friends who participated in
+the application user had, who did not participate in the
+application. Most times, those people just had one friend, but in eleven
+cases, they had four or five participants in their friends list.
+
+\begin{table}
+\label{tab:nouser}
+\begin{tabular}{c c}
+Number of friends & Frequency \\
+1& 5150\\
+2& 240\\
+3& 55\\
+4& 6\\
+5& 5\\
+\end{tabular}
+\caption{Table details how many friends user had, who did not
+  participate in the application.}
+\end{table}
 
 % \begin{center}
 % \begin{table}
@@ -557,18 +780,43 @@ internal social graph.
 
 
 
-\section{Discussion}
+\section{Discussion and Outlook}
 \label{sec:discussion}
+From the results given in section \ref{sec:results} it can be derived
+that the number of friends did not to play a bigger role in the
+process of the application's distribution. The number of connections
+to other users seems to play a bigger 
+role, as it is indicated by table \ref{tab:spread} and figure
+\ref{fig:spreaders}. In addition, a worse score made people unlikely
+to spread the application, just one person with a score less than 3
+did so. Thus, people with a higher score (on average $3.11$, median $3.32$) are
+supposed to have distributed the application. Indeed, some people who
+had four or five friends who participated in the application did not
+install the application.
+
+In order to get more reliability towards the processes of distribution
+of applications on Facebook, more applications must be analyzed.
+Future research may consider, how patterns change with respect
+to users' age, and if further characteristics can be identified. In
+case of larger applications, it could be studied, if turning points
+or intervals exist, which - when exceeded - make users significantly
+more likely to join the application.
+
+\section{Conclusion}
+\label{sec:conclusion}
+This research indicates, that the spreading of application follows
+certain patterns. Oftentimes, people say that they don't want to
+make a worse impression on Facebook, and this is also reflected in the
+fact, that only people who yield higher scores in the quiz also
+distributed to their friends. In the environment analyzed, dense
+networks with few participants, i.e. in networks in which people know
+each other, made  further members of their network very likely to join
+the application. Indeed, the number of friends did not play a role in
+making people likely to spread the application.
 
 
 
 
-\section{Outlook}
-\label{sec:outlook}
-
-
-%\section{Conclusion}
-%\label{sec:conclusion}
 
 
 
@@ -606,6 +854,116 @@ internal social graph.
 % \bibitem{}
 
 % \end{thebibliography}
+
+\newpage
+\section{Addendum}
+\label{sec:addendum}
+\begin{figure}
+  \includegraphics[width=3.5in]{../img/fbsolution.png}
+  \caption{Solution of a question.}
+\label{fig:solution}
+\end{figure}
+
+
+
+\begin{figure}
+  \includegraphics[width=3.5in]{../img/fbinvite.png}
+  \caption{This screenshot shows how friends can be invited.}
+\label{fig:invite}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=5in]{../img/friendsScored.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:friendsScored}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=5in]{../img/friendsFilled.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:friendsFilled}
+\end{figure}
+
+
+ \begin{table}
+ \label{tab:spread}
+ \begin{tabular}{ c c c c}
+Friends & Score & Friends who also participated & Probably spread appl. to friends\\
+\hline
+97 & 3.33 & 1 &-\\
+322 & 1.5 & 4 & -\\
+63 & 4 & 1 & 1\\
+102 & 0 & 2 & -\\
+91 & 1 & 3 &1\\
+128 & 4 & 2 & -\\
+151 & 3 & 4 &3\\
+135 & 3.64 & 3 &2\\
+254 & 4 & 2 & 2\\
+220 & 3 & 4 & -\\
+127 & 3 & 2 & -\\
+186 & 4 & 3 & -\\
+42 & 3 & 4 & - \\
+445 & 3 & 4 & - \\
+153 & 3 & 2 &1\\
+20 & 3 & 1 &1\\
+11 & 4.23 & 8 &2\\
+130 & 3 & 1 & -\\
+67 & 2 & 1 & - \\
+207 & 2 & 2 & -\\
+74 & 4.5 & 3 & -\\
+47 & 4.42 & 3& -\\
+157 & 3 & 2 & -\\
+136 & 3 & 2 & -\\
+78 & 4 & 1 & -\\
+167 & 2 &1 & -
+\end{tabular}
+\caption{Table shows how many friends and which score user had who may have spread the
+  application, and how many of their friends started to use the
+  application. If a user was a connector to another network, it is
+  calculated to how many new persons the application (appl.) was
+  probably spread.}
+\end{table}
+
+
+
+
+ \begin{center}
+ \begin{table}
+ \label{tab:nospread}
+ \begin{tabular}{ c c c}
+Friends & Score  \\
+\hline
+90 & 1.29 \\
+332 & 3 \\
+233 & 4 \\
+79 & 3 \\
+53 & 1 \\
+89 & 2 \\
+72 & 4 \\
+76 & 1 \\
+264 & 1 \\
+35 & 3 \\
+121 & 4 \\
+289 & 1 \\
+15 & 4 \\
+49 & 4 \\
+0 & 4.75 \\
+80 & 4 \\
+60 & 0 \\
+13 & 2.5 \\
+229 & 0 \\
+53 & 0 \\
+10 & 3 
+\end{tabular}
+\caption{Table shows how many friends and which score user had who did
+  not spread the application.}
+\end{table}
+\end{center}
+
+
+
 
 
 \end{document}
