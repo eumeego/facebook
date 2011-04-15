@@ -652,22 +652,39 @@ Finally, an average score is computed and stored in the user table.
 
 \subsection{Data evaluation}
 \label{sec:data-evaluation}
-Data evaluation is performed by using the MySQL database, and
-PHP scripts. In addition, the dot
-language\footnote{http://www.graphviz.org/Documentation.php} is employed
-to create graphs. 
+For data evaluation, a tool coded in PHP exists. It allows for output
+of metrics as \ac{csv} and graphs in \ac{dot}
+language\footnote{http://www.graphviz.org/Documentation.php}.
+The data evaluated by the tool are taken from
+ database tables the quiz also makes use of.
 
+As mentioned in previous sections, the tool maintains an extract of
+Facebook's social graph internally. This graph contains users' basic
+information, friendships, etc. The internal graph is
+extended by information from the quiz, such as if the user has
+installed the application, and which score a user had. The internal graph
+consists of instances of class \textit{user}, which have references
+among each other representing friendships. The whole set of users is
+maintained by \textit{main.php}, which contains a list of all the user
+instances. 
 
-The evaluation scripts are maintained by \textit{main.php}. A user
-class represents Facebook's social graph internally. Its properties
-are user's Facebook ID, registration date, average score, a list of
-friends, and a list of IDs to whom the user may have spread the
-application. Friendships are represented by a list of references to corresponding
-user objects, and names of users' can be made anonymous if needed.
+Before the graph is created, user names can be made anonymous and the
+results can be stored in the \textit{user} table to provide
+reusability, too. User names are made anonymous by random selection of
+a name from a list of popular baby names from 2009. The list of names was
+taken from \url{http://www.ssa.gov/cgi-bin/popularnames.cgi}.   
+For each gender, hundred names are stored in an array, and if the
+gender is set, a name of same gender is chosen. Otherwise, the name is
+taken randomly. The name of the person who spread the application
+originally is always set to \textit{Alexandra}.
 
+The tool can make a prognoses, which users spread the quiz. To
+identify such users, the following idea is employed:
 A user is supposed to have spread the app if he/she has
-a friend who used the application and who belongs to a \textit{new}
-network. Such persons are found by recursively checking if an user of
+friends who also used the application and who belong to a \textit{new}
+social network. Figure \ref{fig:newNW} gives an example.
+The implementation is as follows: People who are supposed to have
+spread the quiz are found by recursively checking if an user of 
 the application has friends, who also used the application, and whose friends
 also used the app, but are not in his/her list of friends, and also not in the list of the person
 who originally spread the application. In this case, the corresponding
@@ -677,17 +694,42 @@ Since it is not clear, why a person started to use an application, the
 script also allows for identification of users who have friends 
 who also participated in the application. 
 
-User names are made anonymous by substituting their names with a
-random name selected from a list of popular baby names
-from 2009, taken from \url{http://www.ssa.gov/cgi-bin/popularnames.cgi}.   
-For each gender, hundred names are stored in an array, and if the
-gender is set, a name of same gender is chosen. Otherwise, the name is
-taken randomly. The name of the person who spread the application
-originally is always set to \textit{Alexandra}.
+To let the tool output the graphs in \ac{dot} language, a parameter
+has to be given to the tool via HTTP-Get method. The parameters are:
+\verb|spreading|, \verb|tree|, \verb|friendsFilled| and
+\verb|friendsScored|. If type \verb|spreading| is selected, only users
+who participated in the quiz are shown. Users who are supposed to have
+spread the application are red colored. Next to each user, the number
+of friends, and the score the user yielded in the quiz are termed. If
+type \verb|tree| is 
+selected, all the users are shown, and nodes of users who participated
+in the quiz are red colored. If type \verb|friendsFilled| is selected,
+only users who participated in the quiz are considered and the
+background color is set corresponding to the number of friends. A user
+with the highest number of friends has background color black, the
+person with the lowest number of friends has background color
+white. If type \verb|friendsScored| is selected, the graph is created
+analogous to type \verb|friendsFilled|, but the background color is
+computed with respect to the score user had in the quiz averagely. 
 
-Output options are a \ac{csv}-file containing metrics calculated from
-the internal social graph as well as various graphs in dot language, created
-from the internal social graph, too.
+To let the tool output \ac{csv}, the \verb|csv| parameter has to be
+set to \verb|appUser| or to \verb|noAppUser|. 
+If \verb|appUser| is selected, for each user the following metrics are
+calculated: The number of friends, the number of friends who
+participated in the application, and to how many people a person
+probably spread the application.  If \verb|noAppUser| is selected, it
+is only computed how many friends these user had who participated in
+the quiz. It is returned, how many user had one friend, two friends,
+and so on.
+
+Besides the tool, some data are directly retrieved using database
+queries. These data include the number of people in the user table, and
+the number of people who participated in the application.
+
+
+% Output options are a \ac{csv}-file containing metrics calculated from
+% the internal social graph as well as various graphs in dot language, created
+% from the internal social graph, too.
 % Properties of
 % user objects are in the style of the \textit{user}-table's properties, and a user's
 % . The whole set of users is maintained by
@@ -697,47 +739,60 @@ from the internal social graph, too.
 
 
 
-
-
 \section{Results}
 \label{sec:results}
-A total of n=52 users participated in the quiz. 6311 users have been
-stored in the user table. Thus, on average each user brought on
-average 121.4 \textit{new} people, who could read about the application
-in their news stream. 
+A total of n=52 users participated in the quiz and 6311 users have been
+stored in the user table. Data were collected from 15th of February to
+15th of April. This section presents, which
+characteristics these users have based on Facebook's insights and on
+metrics computed with the tool discussed in section
+\ref{sec:data-evaluation}. Then, the graphs detailing the spreading of
+the application are shown.
 
-\subsection{Characteristics}
+\subsection{Characteristics Of the Participants}
 \label{sec:characteristics}
+In this section, characteristics about the users who participated in
+the quiz are given. At first, characteristics retrieved from
+Facebook's
+\textit{Insights}\footnote{http://www.facebook.com/help/?search=insights}
+are described, than, metrics collected from database and by the tool are given.
 
-The characteristics discussed in this section consider data of users
-that are still registered (n=37). 
+\subsubsection{Facebook's Insights}
+Facebook Insights `provides Facebook Page owners and Facebook Platform
+developers with metrics around their content.'\cite{facebookInsights}
+These metrics are free and can be found in the \textit{My Apps}
+section on the Facebook Developer Platform.
+Facebook Insights considers for its metrics life time installation of an application
+and events happened in a month. In case of the analyzed application,
+Facebook had 50 Lifetime installed users for the quiz on 15th of April, 2011.
 
-\subsubsection{Age and gender}
+\paragraph{Age and gender}
 \label{sec:age-gender}
-$59 \%$ of the registered user are female, $41 \%$ of the participants
+$60 \%$ of the registered user are female, $40 \%$ of the participants
 are male. Table \ref{tab:agegender} shows classification of the users
-by age and gender. It can be seen, that most users ( 70 \%) were at
-the age of 25-34. Only few ($8.4 \%$) were older, and only 21.4 \%
-were younger.
+by age and gender. It can be obtained, that most users ( 68 \%) were at
+the age of 25-34. Few participants ($8 \%$) were older, and about a
+quarter (24 \%) were younger than 25.
 
 \begin{center}
 \begin{table}
 \label{tab:agegender}
-\begin{tabular}{l | c c c c}
-Gender\textbackslash Age  & 13-17 & 18-24 & 25-34 & 45-54 \\
+\begin{tabular}{l | c c c c c}
+Gender\textbackslash Age  & 13-17 & 18-24 & 25-34 & 45-54 & 55+\\
 \hline
-female  & 2.7 \% & 16 \% & 35 \% & 5.4 \% \\
-male & 0 \% & 2.7 \% & 35 \% & 2.7 \% 
+female  & 2 \% & 18 \% & 36 \% & 4 \% & 0 \%\\
+male & 0 \% & 4 \% & 32 \% & 2 \%  & 2 \\
 \end{tabular}
 \caption{Table shows classification of users by age and gender.}
 \end{table}
 \end{center}
 
-\subsubsection{Demography}
+\paragraph{Demography}
 \label{sec:demographie}
 Table \ref{tab:countries} details the origin of the users and table
-\ref{tab:languages} the languages in which the participants use Facebook.
-As it seems obvious for a quiz in German, most visitors came from Germany.
+\ref{tab:languages} the languages in which the participants chose
+Facebook to occur.
+
 
 \begin{center}
 \begin{table}
@@ -745,7 +800,7 @@ As it seems obvious for a quiz in German, most visitors came from Germany.
 \begin{tabular}{l | c }
 Country  & Visitors \\
 \hline
-Germany  & 32 \\
+Germany  & 44 \\
 United Kingdom & 2 \\
 Israel & 1 \\
 United States of America & 1 \\
@@ -761,14 +816,48 @@ Austria & 1 \\
 \begin{tabular}{l | c }
 Languages   & Visitors \\
 \hline
-German  & 25 \\
-English (UK) & 7 \\
-English (US) & 4 \\
+German  & 34 \\
+English (US) & 10 \\
+English (UK) & 4 \\
 Greek  & 1 \\
+Italian & 1 \\
 \end{tabular}
 \caption{Languages of the participants.}
 \end{table}
 \end{center}
+
+\paragraph{Requests}
+The quiz allows for invitation of friends to participation by sending
+requests. In the time of 18th of March to 8th of April, 4 requests
+were sent, and one was accepted. In the month before, no friend
+requests were accepted or ignored.
+
+\subsubsection{Metrics collected by the tool}
+As detailed in section \ref{sec:data-evaluation}, the tool allows for
+output of metrics as \ac{csv}. Metrics about users who participated in
+the quiz are given in table
+\ref{tab:spread}. Table \ref{tab:nouser}
+describes user who did not participate. Table \ref{tab:scorespread}
+and \ref{tab:nospread} sum up metrics from table \ref{tab:spread}.
+
+Five users participated in the application, but 
+
+Two tables also located in the addendum describe to how many
+other participants friendships existed (see table \ref{tab:spread} and
+\ref{tab:nospread}), and to how many people of a
+\textit{new} network the application was (probably) distributed by the
+user. $26$ participants were on average $2.54$ friends with other
+participants and those, who spread the application, seemed to have
+more connections to other people than those who did not.
+The average score of people connected to others was $3.02$. It was
+higher than the average score of people not connected to others ($2.41$).
+People not connected to further participants had fewer friends on average ($106.8$)
+than the connected participants ($138.83$).
+
+Table \ref{tab:nouser} details how many friends who participated in
+the application user had, who did not participate in the
+application. Most times, those people just had one friend, but in eleven
+cases, they had four or five participants in their friends list.
 
 
 \subsection{Spreading of the quiz}
@@ -831,36 +920,6 @@ friends a lighter background color.
 \label{fig:spreading}
 \end{figure}
 
-Two tables also located in the addendum describe to how many
-other participants friendships existed (see table \ref{tab:spread} and
-\ref{tab:nospread}), and to how many people of a
-\textit{new} network the application was (probably) distributed by the
-user. $26$ participants were on average $2.54$ friends with other
-participants and those, who spread the application, seemed to have
-more connections to other people than those who did not.
-The average score of people connected to others was $3.02$. It was
-higher than the average score of people not connected to others ($2.41$).
-People not connected to further participants had fewer friends on average ($106.8$)
-than the connected participants ($138.83$).
-
-Table \ref{tab:nouser} details how many friends who participated in
-the application user had, who did not participate in the
-application. Most times, those people just had one friend, but in eleven
-cases, they had four or five participants in their friends list.
-
-\begin{table}
-\label{tab:nouser}
-\begin{tabular}{c c}
-Number of friends & Frequency \\
-1& 5150\\
-2& 240\\
-3& 55\\
-4& 6\\
-5& 5\\
-\end{tabular}
-\caption{Table details how many friends user had, who did not
-  participate in the application.}
-\end{table}
 
 % \begin{center}
 % \begin{table}
@@ -954,7 +1013,7 @@ more likely to join the application.
 % \end{thebibliography}
 
 \newpage
-\section{Addendum}
+\section{Tables and Figures}
 \label{sec:addendum}
 
 \begin{figure}
@@ -968,6 +1027,13 @@ more likely to join the application.
   \includegraphics[width=3.5in]{../img/fbsolution.png}
   \caption{Solution of a question.}
 \label{fig:solution}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[height=3in]{../img/newNW.png}
+ \caption{This figure emphasizes users who connect to new social networks with
+   red border.}
+\label{fig:newNW}
 \end{figure}
 
 
@@ -995,41 +1061,67 @@ more likely to join the application.
 
  \begin{table}
  \label{tab:spread}
- \begin{tabular}{ c c c c}
-Friends & Score & Friends who also participated & Probably spread appl. to friends\\
-\hline
-97 & 3.33 & 1 &-\\
-322 & 1.5 & 4 & -\\
-63 & 4 & 1 & 1\\
-102 & 0 & 2 & -\\
-91 & 1 & 3 &1\\
-128 & 4 & 2 & -\\
-151 & 3 & 4 &3\\
-135 & 3.64 & 3 &2\\
-254 & 4 & 2 & 2\\
-220 & 3 & 4 & -\\
-127 & 3 & 2 & -\\
-186 & 4 & 3 & -\\
-42 & 3 & 4 & - \\
-445 & 3 & 4 & - \\
-153 & 3 & 2 &1\\
-20 & 3 & 1 &1\\
-11 & 4.23 & 8 &2\\
-130 & 3 & 1 & -\\
-67 & 2 & 1 & - \\
-207 & 2 & 2 & -\\
-74 & 4.5 & 3 & -\\
-47 & 4.42 & 3& -\\
-157 & 3 & 2 & -\\
-136 & 3 & 2 & -\\
-78 & 4 & 1 & -\\
-167 & 2 &1 & -
+ \begin{tabular}{ c c c c c}
+Anon. Name&Friends&App-friends&Spread App to&Average Score	\\
+Alexandra & 133& 34& 34 & 4.4625 \\
+Evan & 97& 1& 0 & 3.33333 \\
+Justin & 90& 2& 0 & 1.28571 \\
+Tristan & 332& 2& 0 & 3 \\
+Thomas & 396& 3& 0 & 4 \\
+Jose & 233& 1& 0 & 4 \\
+David & 322& 6& 0 & 1.5 \\
+Gianna & 63& 3& 1 & 4 \\
+Makayla & 79& 1& 0 & 3 \\
+Connor & 102& 3& 0 & 0 \\
+Ethan & 91& 4& 1 & 1 \\
+Isabelle & 53& 1& 0 & 1 \\
+Gavin & 89& 1& 0 & 2 \\
+Caleb & 128& 3& 0 & 4 \\
+Sarah & 151& 5& 3 & 3 \\
+Emma & 72& 1& 0 & 4 \\
+Gabrielle & 135& 4& 2 & 3.63636 \\
+David & 254& 3& 2 & 4 \\
+Emily & 220& 5& 0 & 3 \\
+Victoria & 63& 2& 0 & 2 \\
+Brian & 126& 2& 0 & 4 \\
+Jose & 127& 3& 0 & 3 \\
+Thomas & 186& 4& 0 & 4 \\
+Evelyn & 42& 5& 0 & 3 \\
+Paige & 76& 2& 0 & 1 \\
+Hannah & 264& 2& 0 & 1 \\
+Charlotte & 445& 5& 0 & 3 \\
+Elizabeth & 35& 1& 0 & 3 \\
+Carson & 153& 3& 1 & 3 \\
+Carson & 20& 2& 1 & 3 \\
+Nathan & 121& 1& 0 & 4 \\
+Eli & 11& 9& 2 & 4.23077 \\
+Isaac & 290& 1& 0 & 1 \\
+Alexandra & 130& 1& 0 & 3 \\
+Gabriel & 67& 1& 0 & 2 \\
+Paige & 16& 1& 0 & 4 \\
+David & 50& 1& 0 & 4 \\
+Julian & 207& 2& 0 & 2 \\
+Carlos & 3& 3& 0 & 4.75 \\
+Evan & 74& 3& 0 & 4.5 \\
+Sebastian & 47& 3& 0 & 4.41667 \\
+Xavier & 80& 0& 0 & 4 \\
+Evan & 157& 2& 0 & 3 \\
+Brody & 136& 2& 0 & 3 \\
+Luis & 60& 1& 0 & \\
+Allison & 13& 0& 0 & 2.5 \\
+Tyler & 229& 0& 0 & \\
+Emily & 53& 0& 0 & \\
+Khloe & 78& 1& 0 & 4 \\
+Katelyn & 167& 1& 0 & 2 \\
+Kaitlyn & 10& 1& 0 & 3 \\
+Eva & 272& 0& 0 & 4
 \end{tabular}
-\caption{Table shows how many friends and which score user had who may have spread the
-  application, and how many of their friends started to use the
-  application. If a user was a connector to another network, it is
-  calculated to how many new persons the application (appl.) was
-  probably spread.}
+\caption{Table details metrics about users who participated in the
+  application. Friends detail the number of friends a user had,
+  App-friends is the number of friends who also participated in the
+  quiz, Spread App To details to how many people a user probably
+  spread the application, and Average Score details to the score the
+  user averagely had in the quiz. The names were made anonymous.}
 \end{table}
 
 
@@ -1038,37 +1130,51 @@ Friends & Score & Friends who also participated & Probably spread appl. to frien
  \begin{center}
  \begin{table}
  \label{tab:nospread}
- \begin{tabular}{ c c c}
-Friends & Score  \\
+ \begin{tabular}{ c c}
+Number of app friends & Occurrences \\
 \hline
-90 & 1.29 \\
-332 & 3 \\
-233 & 4 \\
-79 & 3 \\
-53 & 1 \\
-89 & 2 \\
-72 & 4 \\
-76 & 1 \\
-264 & 1 \\
-35 & 3 \\
-121 & 4 \\
-289 & 1 \\
-15 & 4 \\
-49 & 4 \\
-0 & 4.75 \\
-80 & 4 \\
-60 & 0 \\
-13 & 2.5 \\
-229 & 0 \\
-53 & 0 \\
-10 & 3 
+0 app friends & 5 \\
+1 app friend & 17 \\
+2 app friends & 10 \\
+3 app friends & 10 \\
+4 app friends & 3 \\
+5 app friends & 3\\
+6 app friends & 2\\
+9 app friends & 1\\
+34 app friends & 1 \\
 \end{tabular}
-\caption{Table shows how many friends and which score user had who did
-  not spread the application.}
+\caption{Table sums up metrics from table \ref{tab: spread}. It
+  details how many users had 0 friends who also participated in the
+  application, one friend, and so further.}
 \end{table}
 \end{center}
 
 
+\begin{table}
+\label{tab:scorespread}
+\begin{tabular}{c c}
+Spread to & Average score \\
+1&	2.75 \\
+2&	3.96 \\
+3&	3 \\
+\end{tabular}
+\caption{Table details the average score of people who spread the
+  application to one, two, or three users.}
+\end{table}
+
+\begin{table}
+\label{tab:nouser}
+\begin{tabular}{c c}
+Number of friends & Frequency \\
+1& 5150\\
+2& 240\\
+3& 55\\
+4& 6\\
+5& 5\\
+\end{tabular}
+\caption{Table details how many friends user had, who did not
+  participate in the application.}
+\end{table}
 
 
 
