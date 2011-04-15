@@ -49,6 +49,8 @@
 %% \usepackage{amsthm}
 \usepackage{hyperref} %\url can be used, links are highlited
 
+%\usepackage[latin1]{inputenc} % Zeichencodierung
+%\usepackage[T1]{fontenc} % Zeichencodierung
 
 \usepackage[printonlyused]{acronym}
 
@@ -128,7 +130,7 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{Distribution of a Facebook application}
+\title{Spreading of a Facebook Application}
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{<author name>}
@@ -163,24 +165,35 @@
 \begin{abstract}
 %% Text of abstract, 150 - 350 words
 % The outcome was students' perceptions of preparedness.
-This paper investigates, how a small Facebook application 
-distributes among friends. A graph is created which represents users, who
-installed the application, as nodes and friendship between them as
-edges. In addition, metrics are calculated to determine, which
-parameters  make users likely to invite their friends to
-participate. 
+Applications on Facebook are popular and attract many
+people. Nevertheless, before installation people must acknowledge that an application
+exists, and they must demand the application, too.
+There may exist several reasons for people to install
+applications, such as intensive usage within their social network, or
+personal interest in a special topic. Persuasion can
+happen virally through Facebook's news stream, by marketing through
+friends, or by directed search on 
+Facebook. Differences in the spreading process are supposed to exist
+for the different kinds of applications. 
 
-The application itself is a quiz which asks people 5
-questions, randomly selected from a pool of 20 questions, 
-about dentistry health facts. After the quiz, participants
-get to know if they had a higher score than their friends and who of their
-friends answered the questions they got correctly.
+This paper investigates, how a quiz asking people five randomly
+selected questions about dentistry health facts spreads on
+Facebook. The quiz is made social by providing participants with
+information such as if they were better than their
+friends and other users, and which of their friends could answer the given questions.
 
-Results show users, who yield a high score in the quiz,
-more likely to invent other users than users, who got a worse
-score. In addition, the number of friends did not mark users to be
-relevant for spreading the app. Indeed, people who had less friends
-were much more likely to spread the application.
+Analysis is supported by a tool maintaining an internal representation
+of an extract of Facebook's social graph containing the participants
+as nodes, their friendships as edges, and their basic information
+retrieved from Facebook as well as quiz results as node
+attributes. The tool allows for output of aspects of the internal graph
+in DOT-language, and export of metrics to CSV, too. 
+
+Results show that participants, who connect the network of existing
+users to a new one, often achieved a relatively high score in the quiz. New
+participants often had strong connections to the network of people who
+already participated. Indeed, the number of friends did not seem to make
+users more or less likely to gather new participants for the quiz.
 \end{abstract}
 
 \begin{keyword}
@@ -188,7 +201,7 @@ were much more likely to spread the application.
 
 %% MSC codes here, in the form: \MSC code \sep code
 %% or \MSC[2008] code \sep code (2000 is the default)
-Facebook, Social Networking, data mining, social graph
+Facebook, Spreading of Applications, Social Network, data mining, social graph
 \end{keyword}
 
 \end{frontmatter}
@@ -207,65 +220,100 @@ Facebook, Social Networking, data mining, social graph
 \label{sec:introduction}
 Founded in 2004, Facebook\footnote{www.facebook.com} has
 become a social network currently used by more than 600 million people
-all over the world\cite{facebook500}. Since 2007, Facebook provides an API allowing
-third party developers to embed their own applications into
+all over the world\cite{facebook500}. Since 2007, Facebook provides an API permitting
+third party developers to embed their own applications in
 Facebook\footnote{http://developers.facebook.com/blog/archive}.
 Subsequent to the F8 conference in April, 2010, Facebook simplified
-access to its social graph via Open Graph Protocol \cite{facebookStats} and allowed
-for integration of external websites. Until October, 2009,
-over 350 000 apps had been seen on Facebook \cite{facebookBlog}.
-Due to current statistics, people install about 20 million apps per day. In addition, ten thousand new
-websites integrate with Facebook every day. \cite{facebookStats}
+access to its social graph by allowing
+external websites for integration in their social graph through Open
+Graph Protocol\cite{facebookStats} . 
 
 Due to integration in Facebook's social graph, third party
-applications spare user authentication procedures and can access
-private user information as well. These information can include basic
-information and friend lists, but also interests and further data
-specified by an access token  \footnote{http://developers.facebook.com/docs/authentication/}.
-As the data provided by Facebook, and collected by analyzing user
-behaviour on an application, represent a lot of social information, it
-seems obvious, that these data also allow for studying social groups.
+applications not only spare user authentication procedures, but can also access
+extracts of Facebook's social graph, too. These information provided
+by Facebook detail a user's friend list, basic information, and
+further data to which access has to be granted by access tokens
+\footnote{http://developers.facebook.com/docs/authentication/}. Thus,
+applications let Facebook's social graph enlarge and make people
+spend more time of Facebook. In addition, application developers
+can spread their application virally through appearance in news
+streams, and collect useful information about the social network of
+their users, too.
 
-This paper investigates the distribution process of a quiz on Facebook
-by analysing which parameters make users likely to distribute the application
-and which parameters do not. 
+Statistics show development of Facebook applications being very
+attractive nowadays. Until October, 2009, 
+over 350 000 apps had been seen on Facebook \cite{facebookBlog}.
+According to current statistics, about 20 million applications are
+installed per day, and ten thousand new websites integrate with
+Facebook every day, too. \cite{facebookStats} 
 
-In the first section, background information
-about how applications can be integrated with Facebook are
-given. Then, the methodology is described in section \ref{sec:method},
-including the quiz, as well as the 
-proceedings used for data collection and evaluation. In section
-\ref{sec:results}, the results are detailed, and in section
-\ref{sec:discussion} and \ref{sec:outlook}, they are discussed and an
-outlook is given for further research. 
+This paper investigates the process of spreading of applications on
+Facebook by focusing on the show case of a quiz asking users five randomly
+selected questions about dentistry health facts. User data are
+collected in a MySQL database, and evaluation of the data is
+accomplished by the outputs of a tool maintaining an internal representation of the extract of Facebook's
+social graph the application is allowed to access.
+
+The tool allows for output of graphs in \ac{dot} language and output of
+metrics as \ac{csv}. The graphs the tool can output detail how the application
+spreads, and allows for labelling of people (nodes) which connect the
+network of existing user to new networks. The metrics detail with how
+many people users who participated are friends, which score they had,
+and to how many new people they could have spread the application.
+
+In the first section, basic information about Facebook's social graph,
+and integration of applications is
+given. In the next section, the methodology is described by detailing
+the quiz and its building, as well as the tool for data evaluation. Section
+\ref{sec:results} presents the results, and in section
+\ref{sec:discussion} and \ref{sec:outlook}, a discussed follows. Section
+\ref{sec:conclusion} concludes the paper by summing up the results,
+and giving an outlook for further research, too.
 
 
-\section{Background}
+\section{Foundations}
 \label{sec:background}
-This section describes the social graph concept, how applications can be integrated with
-Facebook, how authentication and authorisation is done, and in which
-format data from the social graph can be obtained.
+This section details concepts from Facebook, basics about the
+\ac{DOT} language, and at least, it defines the metrics the tool
+explained in section \ref{sec:methodology} can output. Facebook's
+social graph concept is explained in 
+section \ref{sec:social-graph}, section \ref{sec:integr-appl-with}
+describes how applications can be integrated with Facebook, and
+section \ref{sec:auth-auth} makes clear how applications can be
+integrated with Facebook.
 
 \subsection{Social Graph}
 \label{sec:social-graph}
-The \textit{social graph} is at Facebook's core. It represents
-connections between people and things they care about
-\cite{facebookDev}. In April, 2010, Facebook included access to the
-social graph via the Open Graph Protocol, which advanced integration of
-external websites into the social graph \cite{facebookDev2}. These websites can make use of
-social plugins such as \textit{Like Buttons} or \textit{Comment Boxes} \cite{facebookDev2}
-and for this reason, the social graph contains not only connections between
-people on Facebook (friend relations), but also between 
-entities such as applications, movie entries on external websites,
-news articles, and much more. As this allows
-people to identify friends on external websites and receive
-information about their friends' attitude towards anything their
-friends have visited and commented before, one can say
-that Facebook's social graph makes the Internet social.  
+Facebook's \textit{social graph} can be regarded as its core. It
+represents connections between people and things people care about 
+\cite{facebookDev}. Since April, 2010, Facebook allows for access to its
+social graph via the Open Graph Protocol\footnote{http://ogp.me/}, thus facilitating
+external websites and third party applications to integrate in the social graph by becoming
+additional nodes\cite{facebookDev2}. These additional nodes can for
+instance represent entities such as movies, news articles,
+applications, and much more. People on Facebook can add connections
+from their user node to these additional nodes by clicking on plugins
+provided by Facebook such as \textit{Like Buttons} or entering content in \textit{Comment
+  Boxes}.  \cite{facebookDev2} As images of friends who liked an
+entity, and comments of friends can be shown on external websites via
+iframes, aspects from a user's social network are brought to these
+websites, and for this reason, Facebook is said to make the Internet social.
+
+In general, additional nodes representing external websites are integrated
+unidirectional. Thus, Facebook retrieves the information in which
+entities users were interested in, while the external websites do not
+gain access to Facebook's social graph. Instead, the social
+information is included through iframes.
+In order to integrate nodes bi-directional, the user must permit the
+access, and both, the user, and the entity, which wants to gain access
+to the social graph, must be authenticated. This process is detailed in
+section \ref{sec:auth-auth}. This happens in case of applications on
+Facebook, thus they are included bi-directional and can grab
+information from Facebook's social graph.
 
 The Graph API is one of Facebook's core concepts and presents a consistent
-view of the social graph. Every object has an unique ID and its
-properties can be accessed by requesting the appropriate URL:
+view of the social graph. Every object has an unique ID and if it is
+public, its properties can be accessed by requesting the appropriate URL:
 \url{https://graph.facebook.com/ID}. Listing \ref{list:kbecker} shows
 the author's public user node on Facebook's social graph. which is
 returned as a \ac{json}-object\footnote{http://www.json.org}.
@@ -288,10 +336,9 @@ In order to get access not only to public, but also to private
 information, an access token has to be included in the Graph API
 request. To get this token, the accessing entity must be
 authorized and authenticated to do so. How this can be achieved is
-discussed in section \ref{sec:auth-auth}. If one tries to access
-non-public information such as the author's list of friends, an error
-in terms of a missing access token is returned. An example is given in
-listing \ref{list:kbeckerfriends}.
+explained in section \ref{sec:auth-auth}. When trying to access
+non-public information without the needed access token, an error
+is returned. Listing \ref{list:kbeckerfriends} gives an example for this.
 
 
 \begin{lstlisting}[caption=JSON object from
@@ -332,7 +379,7 @@ sets of pre-defined functions for communication with Facebook. For
 instance, they include the O-Auth 2.0 dialog which is described in
 section \ref{sec:auth-auth}. In
 addition, Facebook grants observation of its own development process by
-making its raodmap public, and by showing its buglist. In addition, a
+making its raodmap public, and by showcasting its buglist. In addition, a
 testserver exists to help developers to analyze if their application
 is going to run with planned features from Facebook. 
 Facebook provides an \textit{insights}-feature which makes
@@ -440,54 +487,105 @@ a [label="Foo", color="blue", shape=box, fontcolor="red"];
 }
 \end{lstlisting}
 
+\subsection{Software Metrics}
+\label{sec:metrics}
+Metrics define a mapping of a `particular measurable entity to a
+numerical value' \cite{Lanz06a}. Thus, they allow for analysis and summarization
+of properties which are oftentimes not measurable. In addition, they
+facilitate detection of `outliers in large amounts of data'
+\cite{Lanz06a}. Metrics can be plotted as diagrams or charts, or they
+can be used for visualizations such as graphs connecting nodes
+characterized by metrics. Since humans are trained in understanding signs and
+pictures, visualizations supports understanding and identifying of
+`hidden aspects'. \cite{Lanz06a} In this paper, they are
+employed to characterize users of the quiz. Some metrics can be output
+as \ac{pdf}, and others are used to create the graphs in \ac{dot} language.
+
+The following metrics can be calculated:
+
+\begin{itemize}
+\item A user's number of friends.
+\item A user's score.
+\item The number of friends who also participated in the quiz.
+\item The number of friends who used the application, and belong to a
+new network, thus the only connector between the new users' nodes and
+the other nodes of the graph is the node of the user analyzed.
+\end{itemize}
+
 
 \section{Methodology}
 \label{sec:method}
-In this section, the quiz is described as well as its
-implementation. Then, it is explained how data are collected for
+This section describes the methodology. At first, the quiz which is
+used to collect data from Facebook's social graph is described as well
+as its implementation (section \ref{sec:quiz}).
+Then, it is explained how data are collected for
 further analysis and how they can be evaluated.
 
-\subsection{The Quiz}
+\subsection{The Analyzed Application}
 \label{sec:quiz}
-The quiz contains questions in German about dentistry health facts. Participants are asked 5
-questions taken from a pool of 20 questions. Each question has 4
-possible answers. Multiple selection is possible, but at least one
-answer is correct. A question is answered correctly, if each correct
-and no incorrect answer have been selected. Figure \ref{fig:quiz}
-shows how the quiz looks like. 
+The application analyzed in this paper is a quiz. It is described in
+\ref{sec:aboutQuiz}, and in \ref{sec:implmentation} its implementation
+is detailed.
 
+\subsubsection{About The Quiz}
+\label{sec:aboutQuiz}
+The quiz is about dental health fact and also challenging. It can be
+found at the URL \url{http://apps.facebook.com/zahniquiz}.
+Each participants is asked five questions randomly selected
+from a set of twenty questions. A question has four answers, of
+which either one, two, three or each answer can be correct, thus
+the kind of answers refers to the term \textit{multiple selection}.
+A question is scored to be answered correctly, if the correct subset
+was selected by the user, thus each correct and no incorrect answer
+were selected. Each question answered correctly scores one, thus the
+highest score is five. Figure \ref{fig:quiz} gives a screenshot of the quiz. 
 
-\begin{figure}
-  \includegraphics[height=3in]{../img/fbquiz.png}
- \caption{The quiz.}
-\label{fig:quiz}
-\end{figure}
-
-
-The quiz is competitive. After the quiz is completed, user are told
-how good they were in comparison to other participants and to their
+The quiz is competitive. After the quiz is completed, users are told
+their score, and in addition, they acknowledge how good they were in
+comparison to other participants as well as to their 
 friends. As shown in figure \ref{fig:solution}, for each question the
 correct solution is given. A user can also invite friends to
-participate by clicking on the appropriate image. This is demonstrated in
-figure \ref{fig:invite}.
+participate. For this issue, profile pictures of a user's friends are
+printed beyond the quiz. By clicking on such an image, an invitation
+can be sent to the friend's Facebook profile. 
 
 
-\subsection{Implementation}
+\subsubsection{Implementation}
 \label{sec:implementation}
-The quiz-application detailed in the last section makes use of
-Facebook's php-\ac{sdk} and JavaScript-\ac{sdk}. It requires
-permissions for \textit{user$\_$birthday} and
+The studied application makes use of 
+Facebook's php-\ac{sdk} and JavaScript-\ac{sdk}\footnote{http://developers.facebook.com/docs/}. It requires
+permissions (see \ref{sec:auth-auth}) for \textit{user$\_$birthday} and
 \textit{publish$\_$stream}.
-Data used by the quiz are stored in a MySQL-database, and php scripts
-handle the application flow. \textit{index.php} maintains calls of
-scripts printing the quiz (\textit{quiz.php}, \textit{question.php}), and displaying
-the correct solution as well as the opportunity to invite friends
-after completion of the quiz
-(\textit{quizResult.php}). \textit{library.php} contains all the
-functions needed.
+The questions and answers of the quiz are stored in a MySQL-database. PHP scripts
+handle the creation of the quiz and
+the Pear DB module \footnote{http://pear.php.net/} is used
+for database queries.
+
+The structure of the Facebook application is related to a
+Model-view-controller architecture. \textit{Pear::DB} represents the
+model, files stored in folder \textit{templates} act as view
+(\textit{quizQuestion.php}, \textit{quiz.php},
+\textit{quizResult.php}), and \textit{index.php} assumes the role of
+the controller. \textit{library.php} contains a collection of
+functions used by the various PHP scripts. \textit{facebook.php} and
+scripts from \textit{facebook-sdk} folder are downloaded from
+\url{https://github.com/facebook/php-sdk/} provide the functionality
+of Facebook's PHP \ac{sdk}.
+
+The view operates as follows: \textit{quiz.php} checks if the user
+completed the quiz. If not, it prints the form, loads the styles and
+includes \textit{quizQuestion.php} to print the questions. Otherwise, it
+creates the page shown after the quiz is completed by printing a
+statement commenting the user's score, and by providing users with 
+the following options: Users can print their result into their news
+stream and they can send invitations to their friends' Facebook
+profiles. For both options, Facebook's JavaScript \ac{sdk} is
+used. \textit{quizResult.php} contains the code to  
+print the correct solution after the quiz is completed and is included
+by \textit{quizQuestion.php}. 
 
 
-\subsubsection{Database schema}
+\paragraph{Database schema}
 \label{sec:database-schema}
 The database queries are performed with PHP
 pear\footnote{http://pear.php.net/}-package. The following tables exist:
@@ -506,56 +604,57 @@ as correct or false.
 answered by which user, and which were not.
 \end{itemize}
 
-\subsubsection{Application flow}
+\paragraph{Application flow}
 \label{sec:application-flow}
-When a user enters, the \textit{OAuth Dialog} is started. Then, the user data
-including gender, birthday, name, Facebook-ID are stored together with
-a timestamp, and column \textit{has-used-app} is set to 1. In
-addition, each user's friends are also stored and column
-\textit{has-used-app} is set to 0. Then, friendships are stored in the
-table \textit{friends}. Next, the quiz is created by randomly choosing
-five questions from the questions table and requiring the answers. To
-make the questions more attractive, the name of an image convenient to
-the questions topic is also stored in the questions table, and this
-image is placed on the left side of each question. Since multiple
-selection is possible, before the answers, which are also queried from
-the MySQL database, checkboxes are placed before each answer. 
+When a user accesses the canvas page of the quiz, 
+the \textit{OAuth Dialog} is started automatically by the
+\textit{controller}. If authorization and authentication are completed
+successfully, the user's basic data as well as the birthday are stored together with
+a timestamp in the \textit{User} table. Column \textit{has-used-app} is set to 1. In
+addition, each user's friends list is also stored in \textup{User} and
+\textit{Friends} table, and for these \textit{users}, columns
+\textit{has-used-app} is set to 0. 
 
-As soon as a user completed the quiz, evaluation starts by checking
-which questions were answered correctly and by computing the final
-score. Due to multiple selection, user answers are stored in
-an multidimensional array and compared with another multidimensional
-array containing the correct solution and created from the database.
-The given answers are then stored, and in addition, in another table
-(\textit{correctAnsweredQuestions)}
-it is only stored which questions were correct and incorrect answered.
-Some user join the quiz multiple times, and for this reason, each
-score they had is stored in a score table. The user table is also
-changed by entering or updating the average score, computed from each all the scores stored
-in the score table. Then, by using the Java Script \ac{sdk}, the user
-get the option to post the results onto their Facebook wall.
+% the quiz is created by randomly choosing
+% five questions from the questions table and requiring the answers. To
+% make the questions more attractive, the name of an image convenient to
+% the questions topic is also stored in the questions table, and this
+% image is placed on the left side of each question. Since multiple
+% selection is possible, before the answers, which are also queried from
+% the MySQL database, checkboxes are placed before each answer. 
+Next, the quiz is created as mentioned in section
+\ref{sec:implmenetation}.
+After completion, its is evaluated the final score is computed. As
+each answer ought to be stored and multiple selection of answers is
+possible, user answers have to be stored in  a multidimensional. 
 
-In order to make the whole thing challenging, it
-is then computed how high the user's score is compared to the friends
-and to all the other users. 
-In addition, the correct solutions are given, and if a user knew the
-right answer, a green check is placed left to the question. Otherwise,
-a red cross is displayed at the same place. At least, the table with
-the friendships and table \textit{correctAnsweredQuestions} are used
-to identify friends  which answered the question correctly. Images of
-them are placed beyond each question's solution together with the
-information that those friends knew the right solution. 
-In the end, users get the chance to invite friends to the app to
-challenge them. For this reason, each friend's picture is added and
-user can click at them. On click, a pre-defined function from
-Facebook's Java Script \ac{sdk} is called to perform the invitation. 
+The given answers are then stored in table \textit{GivenAnswers}. In
+table (\textit{correctAnsweredQuestions)} it is stored which questions
+were correct or incorrect answered. This happens to spare complicated
+evaluations based on the \textit{GivenAnswers} table later on.
+Finally, an average score is computed and stored in the user table.
+
+% In order to make the whole thing challenging, it
+% is then computed how high the user's score is compared to the friends
+% and to all the other users. 
+% In addition, the correct solutions are given, and if a user knew the
+% right answer, a green check is placed left to the question. Otherwise,
+% a red cross is displayed at the same place. At least, the table with
+% the friendships and table \textit{correctAnsweredQuestions} are used
+% to identify friends  which answered the question correctly. Images of
+% them are placed beyond each question's solution together with the
+% information that those friends knew the right solution. 
+% In the end, users get the chance to invite friends to the app to
+% challenge them. For this reason, each friend's picture is added and
+% user can click at them. On click, a pre-defined function from
+% Facebook's Java Script \ac{sdk} is called to perform the invitation. 
 
 
 \subsection{Data evaluation}
 \label{sec:data-evaluation}
-Data evaluation is performed by using the MySQL tables, and
-PHP. In addition, the dot
-language\footnote{http://www.graphviz.org/Documentation.php} is used
+Data evaluation is performed by using the MySQL database, and
+PHP scripts. In addition, the dot
+language\footnote{http://www.graphviz.org/Documentation.php} is employed
 to create graphs. 
 
 
@@ -602,10 +701,10 @@ from the internal social graph, too.
 
 \section{Results}
 \label{sec:results}
-A total of n=48 users participated in the quiz. 5505 users have been
+A total of n=52 users participated in the quiz. 6311 users have been
 stored in the user table. Thus, on average each user brought on
-average 114.7 \textit{new} people, who could read about the application
-in their news stream. 15 
+average 121.4 \textit{new} people, who could read about the application
+in their news stream. 
 
 \subsection{Characteristics}
 \label{sec:characteristics}
@@ -691,7 +790,7 @@ not connected to the larger network of the
 person who started to spread the application.
 
 \begin{figure}
-  \includegraphics[width=5.2in]{../img/allUserTree.png}
+  \includegraphics[width=5.2in]{../img/tree2.png}
 \caption{Figure shows all users stored in the database. Users who
   participated have a red text color.}
 \label{fig:allUsers}
@@ -714,7 +813,7 @@ friend. The figure also shows that most people who spread the
 application had a score greater than or equal to three. At least, it
 can be obtained that half of the people who spread the application
 had less than hundred friends, which is less than the mean on
-Facebook, i.e. 130 friends \cite{ref:facebookStats}.
+Facebook, i.e. 130 friends \cite{facebookStats}.
 
 In the addendum (section \ref{sec:addendum}), two further graphs are
 shown. In figure \ref{fig:friendsScored}, the background color
@@ -726,7 +825,7 @@ friends a lighter background color.
 
 
 \begin{figure}
-  \includegraphics[width=5in]{../img/spreading.png}
+  \includegraphics[width=5in]{../img/spreading5.png}
 \caption{Figure shows all users stored in the database. Users who
   participated have a red text color.}
 \label{fig:spreading}
@@ -780,7 +879,7 @@ Number of friends & Frequency \\
 
 
 
-\section{Discussion and Outlook}
+\section{Discussion}
 \label{sec:discussion}
 From the results given in section \ref{sec:results} it can be derived
 that the number of friends did not to play a bigger role in the
@@ -794,15 +893,8 @@ supposed to have distributed the application. Indeed, some people who
 had four or five friends who participated in the application did not
 install the application.
 
-In order to get more reliability towards the processes of distribution
-of applications on Facebook, more applications must be analyzed.
-Future research may consider, how patterns change with respect
-to users' age, and if further characteristics can be identified. In
-case of larger applications, it could be studied, if turning points
-or intervals exist, which - when exceeded - make users significantly
-more likely to join the application.
 
-\section{Conclusion}
+\section{Conclusion and Outlook}
 \label{sec:conclusion}
 This research indicates, that the spreading of application follows
 certain patterns. Oftentimes, people say that they don't want to
@@ -815,7 +907,13 @@ the application. Indeed, the number of friends did not play a role in
 making people likely to spread the application.
 
 
-
+In order to get more reliability towards the processes of spreading
+of applications on Facebook, more applications must be analyzed.
+Future research may consider, how patterns change with respect
+to users' age, and if further characteristics can be identified. In
+case of larger applications, it could be studied, if turning points
+or intervals exist, which - when exceeded - make users significantly
+more likely to join the application.
 
 
 
@@ -858,6 +956,14 @@ making people likely to spread the application.
 \newpage
 \section{Addendum}
 \label{sec:addendum}
+
+\begin{figure}
+  \includegraphics[height=3in]{../img/fbquiz.png}
+ \caption{The quiz.}
+\label{fig:quiz}
+\end{figure}
+
+
 \begin{figure}
   \includegraphics[width=3.5in]{../img/fbsolution.png}
   \caption{Solution of a question.}
@@ -866,11 +972,11 @@ making people likely to spread the application.
 
 
 
-\begin{figure}
-  \includegraphics[width=3.5in]{../img/fbinvite.png}
-  \caption{This screenshot shows how friends can be invited.}
-\label{fig:invite}
-\end{figure}
+% \begin{figure}
+%   \includegraphics[width=3.5in]{../img/fbinvite.png}
+%   \caption{This screenshot shows how friends can be invited.}
+% \label{fig:invite}
+% \end{figure}
 
 \begin{figure}
   \includegraphics[width=5in]{../img/friendsScored.png}
