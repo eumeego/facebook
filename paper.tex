@@ -194,7 +194,7 @@ in DOT-language, and export of metrics to CSV, too.
 Results show that participants who connect the network of existing
 users to a new one often achieved a relatively high score in the quiz. New
 participants often had strong connections to the network of people who
-already participated. Indeed, the number of friends did not seem to make
+already participated. Indeed\annSBW{passt da mal überhaupt nicht}, the number of friends did not seem to make
 users more or less likely to gather new participants for the quiz.
 \end{abstract}
 
@@ -224,14 +224,14 @@ Founded in 2004, Facebook\footnote{www.facebook.com} has
 become a social network currently used by more than 600 million people
 all over the world\cite{facebook500}. Since 2007, Facebook provides an API permitting
 third party developers to embed their own applications in
-Facebook\footnote{http://developers.facebook.com/blog/archive}.
+Facebook\footnote{http://developers.facebook.com/blog/archive}\annSBW{sowas kannste nicht verlinken ... wieso sind das fussnoten und keine Quellen?}.
 Subsequent to the F8 conference in April, 2010, Facebook simplified
 access to its social graph by allowing
-external websites for integration in their social graph through Open
+external websites for integration\annSBW{falsche grammatik} in their social graph through \annSBW{the} Open
 Graph Protocol\cite{facebookStats} . 
 
 Due to integration in Facebook's social graph, third party
-applications not only spare user authentication procedures, but can also access
+applications not only spare user\annSBW{s from} authentication procedures, but can also access
 extracts of Facebook's social graph, too. These information provided
 by Facebook detail a user's friend list, basic information, and
 further data to which access has to be granted by access tokens
@@ -268,9 +268,9 @@ and integration of applications is
 given. In the next section, the methodology is described by detailing
 the quiz and its building, as well as the tool for data evaluation. Section
 \ref{sec:results} presents the results, and in section
-\ref{sec:discussion} and \ref{sec:outlook}, a discussed follows. Section
+\ref{sec:discussion} and \ref{sec:outlook}, a discussed follows \annSBW{wording}. Section
 \ref{sec:conclusion} concludes the paper by summing up the results,
-and giving an outlook for further research, too.
+and giving an outlook for further research, too\annSBW{loose the too}.
 
 
 \section{Foundations}
@@ -281,7 +281,7 @@ explained in section \ref{sec:methodology} can output. Facebook's
 social graph concept is explained in 
 section \ref{sec:social-graph}, section \ref{sec:integr-appl-with}
 describes how applications can be integrated with Facebook, and
-section \ref{sec:auth-auth} makes clear how applications can be
+section \ref{sec:auth-auth} makes clear \annSBW{no it doesn't} how applications can be
 integrated with Facebook.
 
 \subsection{Social Graph}
@@ -381,7 +381,7 @@ sets of pre-defined functions for communication with Facebook. For
 instance, they include the O-Auth 2.0 dialog which is described in
 section \ref{sec:auth-auth}. In
 addition, Facebook grants observation of its own development process by
-making its raodmap public, and by showcasting its buglist. In addition, a
+making its raodmap \annSBW{typo} public, and by showcasting \annSBW{typo and wrong word (showcasing is positiv)} its buglist. In addition, a
 testserver exists to help developers to analyze if their application
 is going to run with planned features from Facebook. 
 Facebook provides an \textit{insights}-feature which makes
@@ -395,7 +395,7 @@ In order to authorize and authenticate, Facebook recommends usage of
 O-Auth 2.0 protocol by using the OAuth Dialog included in its
 \ac{sdks}. As the application analyzed in this paper and described in section 
 \ref{sec:method} implements the O-Auth Dialog from the PHP-\ac{sdk},
-this variant will be described in detail. It shall just be mentioned,
+this variant will be described in detail. It shall just be mentioned,\annSBW{ loose the comma}
 that Facebook also allows for manual execution of the steps to receive
 access tokens.\cite{facebookDevAuth}  
 
@@ -429,8 +429,8 @@ app authorization is performed, by involving the client and Facebook
 only. User authentication is done by logging in on Facebook (if necessary) and
 authorization of the application is done by asking the user if he/she
 wants to grant the application access to some data specified by the
-application with the scope parameter. One should note, that no
-login data are sent to the application, thus, this is how Facebook
+application with the scope parameter. One should note, that \annSBW{ loose the comma} no
+login data are sent to the application, thus, \annSBW{thus triffts mal garnicht, das komma is zu viel am besten ganzen satz anders} this is how Facebook
 establishes a trust relation. 
 If the user authorizes the application, an \textit{authorization code} is returned and
 the user is redirected to the application, to which the
@@ -444,10 +444,12 @@ URL by which the Graph API can be accessed. However, Facebook's
 \ac{sdks} also provide functions to perform calls to the Graph API,
 and in this case, the access token is included automatically.
 
+\annSBW{HTTPS? Security überlegungen?}
+
 \subsection{Graphs with DOT language}
 \label{sec:graph-repr-with}
 The \ac{dot} language allows for plain text description of
-graphs. There are few programs that can process \ac{dot} graphs, most
+graphs. There are few programs that can process \ac{dot} graphs, most \annSBW{ not by a long shot}
 of them are part of the
 \textit{Graphviz}\footnote{http://www.graphviz.org}-package. 
 The language allows for directed and undirected graphs, attributes can
@@ -493,7 +495,7 @@ a [label="Foo", color="blue", shape=box, fontcolor="red"];
 \label{sec:metrics}
 Metrics define a mapping of a `particular measurable entity to a
 numerical value' \cite{Lanz06a}. Thus, they allow for analysis and summarization
-of properties which are oftentimes not measurable. In addition, they
+of properties which are oftentimes not measurable\annSBW{gerad eben haste noch das gegenteil behauptet}. In addition, they
 facilitate detection of `outliers in large amounts of data'
 \cite{Lanz06a}. Metrics can be plotted as diagrams or charts, or they
 can be used for visualizations such as graphs connecting nodes
@@ -531,14 +533,14 @@ is detailed.
 
 \subsubsection{About The Quiz}
 \label{sec:aboutQuiz}
-The quiz is about dental health fact and also challenging. It can be
+The quiz is about dental health fact and also challenging\annSBW{loose that}. It can be
 found at the URL \url{http://apps.facebook.com/zahniquiz}.
 Each participants is asked five questions randomly selected
 from a set of twenty questions. A question has four answers, of
 which either one, two, three or each answer can be correct, thus
-the kind of answers refers to the term \textit{multiple selection}.
+the kind of answers refers to the term \textit{multiple selection} \annSBW{der Satz is ganz im Arsch}.
 A question is scored to be answered correctly, if the correct subset
-was selected by the user, thus each correct and no incorrect answer
+was selected by the user, thus \annSBW{i.E. ... thus should be used seldom if at all} each correct and no incorrect answer
 were selected. Each question answered correctly scores one, thus the
 highest score is five. Figure \ref{fig:quiz} gives a screenshot of the quiz. 
 
@@ -557,7 +559,7 @@ can be sent to the friend's Facebook profile.
 The studied application makes use of 
 Facebook's php-\ac{sdk} and JavaScript-\ac{sdk}\footnote{http://developers.facebook.com/docs/}. It requires
 permissions (see \ref{sec:auth-auth}) for \textit{user$\_$birthday} and
-\textit{publish$\_$stream}.
+\textit{publish$\_$stream} \annSBW{erklären!}.
 The questions and answers of the quiz are stored in a MySQL-database. PHP scripts
 handle the creation of the quiz and
 the Pear DB module \footnote{http://pear.php.net/} is used
@@ -610,7 +612,7 @@ answered by which user, and which were not.
 \label{sec:application-flow}
 When a user accesses the canvas page of the quiz, 
 the \textit{OAuth Dialog} is started automatically by the
-\textit{controller}. If authorization and authentication are completed
+\textit{controller} \annSBW{vorhin haste noch gesagt FB macht das}. If authorization and authentication are completed
 successfully, the user's basic data as well as the birthday are stored together with
 a timestamp in the \textit{User} table. Column \textit{has-used-app} is set to 1. In
 addition, each user's friends list is also stored in \textup{User} and
@@ -627,8 +629,8 @@ addition, each user's friends list is also stored in \textup{User} and
 Next, the quiz is created as mentioned in section
 \ref{sec:implmenetation}.
 After completion, its is evaluated the final score is computed. As
-each answer ought to be stored and multiple selection of answers is
-possible, user answers have to be stored in  a multidimensional. 
+each answer ought to be stored and multiple selection of answers is \annSBW{multiple answers are}
+possible, user answers have to be stored in  a multidimensional \annSBW{what?}. 
 
 The given answers are then stored in table \textit{GivenAnswers}. In
 table (\textit{correctAnsweredQuestions)} it is stored which questions
@@ -904,7 +906,7 @@ before.
 \subsection{Graphs detailing the spreading of the quiz}
 \label{sec:distribution-quiz}
 In this section, graphs illustrating how the
-application spread are presented. The original user names collected
+application spread \annSBW{-s/-ed} are presented. The original user names collected
 from Facebook were made anonymous
  (see section \ref{sec:data-evaluation}). Friendships are
 represented by directed edges: If user A has user B in the friend list, an
