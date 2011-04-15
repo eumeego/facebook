@@ -737,6 +737,12 @@ the number of people who participated in the application.
 % allows for output of various graphs in dot-language created from the
 % internal social graph. 
 
+\subsection{Start of the spreading process}
+\label{sec:start-spre-proc}
+The spreading process was started by the author who posted in the news
+stream a German analogon to `please check out my new app!'. In
+addition, a message on Facebook was sent to 17 friends asking them to
+participate. 
 
 
 \section{Results}
@@ -833,6 +839,7 @@ were sent, and one was accepted. In the month before, no friend
 requests were accepted or ignored.
 
 \subsubsection{Metrics collected by the tool}
+\label{sec:tool-metrics}
 As detailed in section \ref{sec:data-evaluation}, the tool allows for
 output of metrics as \ac{csv}. Metrics about users who participated in
 the quiz are given in table
@@ -840,85 +847,107 @@ the quiz are given in table
 describes user who did not participate. Table \ref{tab:scorespread}
 and \ref{tab:nospread} sum up metrics from table \ref{tab:spread}.
 
-Five users participated in the application, but 
+From the tables it can be derived that 34 users belonged to the
+network of the author who started to spread the application. Thus, 18
+application users came from other networks. 5 user did not have any
+friends who also participated. On average, people except the author
+and who had at least one \textit{app friend} had on average $2.5$ friends who also
+used the application. People who probably spread the application to
+one person had on average $3$ friends who used the quiz, too. People
+who probably spread to two persons had on average $5.33$ friends who
+used it, too. As it is shown in table \ref{tab:scorespread},
+the average score of people who probably spread 
+the application was higher for people who spread to more people. 
+% Two tables also located in the addendum describe to how many
+% other participants friendships existed (see table \ref{tab:spread} and
+% \ref{tab:nospread}), and to how many people of a
+% \textit{new} network the application was (probably) distributed by the
+% user. $26$ participants were on average $2.54$ friends with other
+% participants and those, who spread the application, seemed to have
+% more connections to other people than those who did not.
+% The average score of people connected to others was $3.02$. It was
+% higher than the average score of people not connected to others ($2.41$).
+% People not connected to further participants had fewer friends on average ($106.8$)
+% than the connected participants ($138.83$).
 
-Two tables also located in the addendum describe to how many
-other participants friendships existed (see table \ref{tab:spread} and
-\ref{tab:nospread}), and to how many people of a
-\textit{new} network the application was (probably) distributed by the
-user. $26$ participants were on average $2.54$ friends with other
-participants and those, who spread the application, seemed to have
-more connections to other people than those who did not.
-The average score of people connected to others was $3.02$. It was
-higher than the average score of people not connected to others ($2.41$).
-People not connected to further participants had fewer friends on average ($106.8$)
-than the connected participants ($138.83$).
-
-Table \ref{tab:nouser} details how many friends who participated in
-the application user had, who did not participate in the
-application. Most times, those people just had one friend, but in eleven
-cases, they had four or five participants in their friends list.
+Table \ref{tab:nouser} describes friends of participants, who did not
+participate in the quiz. As each friend was stored, these people also
+occur in table \textit{User} and \textit{Friends}. These friends of
+application users may have received friend requests from other users,
+and, they may have read about the application in their friends' news
+stream.
+It can be obtained, that 11 users exist having 4 or five friends who
+use the application. The larger amount of people had fewer friends who
+used the application.
 
 
-\subsection{Spreading of the quiz}
+\subsection{User Response}
+\label{sec:user-response}
+As mentioned in section \ref{sec:start-spre-proc}, 17 friends of the author were
+directly invited to participate in the application. Each of them
+installed the application, thus 17 friends of the author installed the
+application for other reasons. The number of installations per day is
+shown in figure \ref{fig:installations}, the data were exported from
+Facebook Insights. A peak of new installations could be
+found after the request to participate was posted in the news stream
+on 3rd of March, 2011. The days after, further installations
+happened. Six of the people who were asked directly to participate,
+were not asked on 3rd of March, but afterwards. 7 people were asked
+before.
+
+
+
+
+
+\subsection{Graphs detailing the spreading of the quiz}
 \label{sec:distribution-quiz}
 In this section, graphs illustrating how the
-application spread are presented. The original user names collected from Facebook were made anonymous
-before the graphs were printed (see section \ref{sec:data-evaluation}). Friendships are
+application spread are presented. The original user names collected
+from Facebook were made anonymous
+ (see section \ref{sec:data-evaluation}). Friendships are
 represented by directed edges: If user A has user B in the friend list, an
 arrow exists targeting user B.
 
-Figure \ref{fig:allUsers} represents each user stored in user
-table as node, and friendships of those who participated in the
-application as directed edges. Names of users who participated in the quiz are distinguished by
-red font color. The main purpose of this figure is to visualize the
-whole setting and to give an imagination of how many \textit{new}
+Figure \ref{fig:allUsers} represents the graph that is created when
+parameter \verb|tree| is set. In this case, each user stored in \textit{User}
+table becomes a node, and friendships stored in table \textit{Friends}
+are represented by directed edges. Names of users who participated in the quiz are distinguished by
+red font color. The main purpose of this graph type is to
+visualization of the whole spreading process.
+The graph gives an imagination of how many 
 people on Facebook could have read about the application in their 
-news stream. In addition, the figure shows few participants, who are
-not connected to the larger network of the 
-person who started to spread the application.
+news stream, or could have been invited by friends to join the
+application. In addition, the graph shows how new networks are
+reached and how dense the connections were in the network of the root
+of the spreading process.
 
-\begin{figure}
-  \includegraphics[width=5.2in]{../img/tree2.png}
-\caption{Figure shows all users stored in the database. Users who
-  participated have a red text color.}
-\label{fig:allUsers}
-\end{figure}
 
-In the following, only user who participated in the quiz are
-considered. In Figure \ref{fig:spreading} nodes of people, who are
-connector between two networks, have a red font color. The number of
-friends and the average score from quiz are also shown. 
-It can be obtained that in three cases, there are several connections (friendships)
-between the people who participated and belong to a new network. For
-instance, several connections exist between users \textit{Evan},
-\textit{Diego}, \textit{Isabelle}, \textit{Chase}, and \textit{Gebrielle}.
-\textit{Nicholas} and \textit{Chase}, who are friends with those
-people mentioned above, also are friends with \textit{Ethan},
-and \textit{Josiah}.  Then, \textit{Faith} is friend with
-\textit{Owen} and \textit{Colton}, who also know each other, and
-\textit{Mariah} and \textit{Sydney} have \textit{Alexis} as a common
-friend. The figure also shows that most people who spread the
-application had a score greater than or equal to three. At least, it
-can be obtained that half of the people who spread the application
+Figure \ref{fig:spreading} shows the graph that can be obtained when
+parameter \verb|spreading| is set. In this case, only users who
+participated in the quiz are considered. It can be obtained, that the
+users Evelyn, Elli, Carlos, Charlotte, David, Sebastian,
+Evan, Thomas, and Gabrielle have several connections among themselves,
+thus they belong probably to a social network. Most people of this
+network had a relatively high score. 
+Further smaller networks exist. One among the users Sarah, two Evans,
+and Brody, and another one among Julian, Khole, David, and Carson. In
+these networks, the application spread to people of a new network. In
+other cases, one new person who had a friend who used the application
+started to use it as well. In
+addition, some further people found the application in the application
+directory on Facebook.
+At least, it can be obtained that half of the people who spread the application
 had less than hundred friends, which is less than the mean on
 Facebook, i.e. 130 friends \cite{facebookStats}.
 
-In the addendum (section \ref{sec:addendum}), two further graphs are
-shown. In figure \ref{fig:friendsScored}, the background color
-represents a user's average score. User with a darker background had a
-higher score with those having a lighter background color. 
-Figure \ref{fig:friendsFilled} visualizes the amount of friends in the
-by giving users having many friends a dark and those having fewer
-friends a lighter background color. 
+% In the addendum (section \ref{sec:addendum}), two further graphs are
+% shown. In figure \ref{fig:friendsScored}, the background color
+% represents a user's average score. User with a darker background had a
+% higher score with those having a lighter background color. 
+% Figure \ref{fig:friendsFilled} visualizes the amount of friends in the
+% by giving users having many friends a dark and those having fewer
+% friends a lighter background color. 
 
-
-\begin{figure}
-  \includegraphics[width=5in]{../img/spreading5.png}
-\caption{Figure shows all users stored in the database. Users who
-  participated have a red text color.}
-\label{fig:spreading}
-\end{figure}
 
 
 % \begin{center}
@@ -940,12 +969,30 @@ friends a lighter background color.
 
 \section{Discussion}
 \label{sec:discussion}
-From the results given in section \ref{sec:results} it can be derived
-that the number of friends did not to play a bigger role in the
-process of the application's distribution. The number of connections
-to other users seems to play a bigger 
-role, as it is indicated by table \ref{tab:spread} and figure
-\ref{fig:spreaders}. In addition, a worse score made people unlikely
+From the results given in section \ref{sec:results} it can be followed
+that mainly people belonging to the author's social network
+participated in the application. Many of them came after the
+application was solicited on Facebook's news stream, but in the days
+after, further but smaller numbers of installations happened. As participation of friends was posted
+in the news streams of the participants, friends could read about the
+quiz few times. This may have made people curious about the application.
+As it can be obtained in the graphs and in the
+metrics, some users did not have friends who participated. Thus, they
+came for another reason, may be due to interest in dentistry.
+
+Most people who participated were in the age of twenty five to thirty
+four. One reason may be that most of the author's friends are of that
+age. As teenagers have less teeth affected with
+caries than people older than twenty \cite{zahngesundheit}, the chosen
+topic of the question can have increased the effect that mainly people
+in the twenties and thirties participated.
+
+From the metrics it can be concluded that the number of friends did
+not to play a bigger role in the 
+process of the application's spreading. The number of connections
+to other users and the quiz score seemed to play a bigger 
+role, as it is mentioned in section \ref{sec:tool-metrics}. 
+In addition, a worse score made people unlikely
 to spread the application, just one person with a score less than 3
 did so. Thus, people with a higher score (on average $3.11$, median $3.32$) are
 supposed to have distributed the application. Indeed, some people who
@@ -955,8 +1002,13 @@ install the application.
 
 \section{Conclusion and Outlook}
 \label{sec:conclusion}
-This research indicates, that the spreading of application follows
-certain patterns. Oftentimes, people say that they don't want to
+This research indicates, that their is not just one default pattern
+after which applications spread on Facebook. Instead, several facts
+seem to influence this effect. On the one hand, the topic of an
+application and an applications type hit the interest of specific
+people. Furthermore, there are often 
+
+. Oftentimes, people say that they don't want to
 make a worse impression on Facebook, and this is also reflected in the
 fact, that only people who yield higher scores in the quiz also
 distributed to their friends. In the environment analyzed, dense
@@ -1030,10 +1082,33 @@ more likely to join the application.
 \end{figure}
 
 \begin{figure}
-  \includegraphics[height=3in]{../img/newNW.png}
- \caption{This figure emphasizes users who connect to new social networks with
+  \includegraphics[height=1.5in]{../img/newNW.png}
+ \caption{This figure emphasizes user b who connects the existing
+   network of users to a new social networks with
    red border.}
 \label{fig:newNW}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics[width=5.2in]{../img/tree2.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:allUsers}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=5in]{../img/spreading5.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:spreading}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=5in]{../img/installations.png}
+\caption{Figure shows all users stored in the database. Users who
+  participated have a red text color.}
+\label{fig:installations}
 \end{figure}
 
 
@@ -1057,6 +1132,7 @@ more likely to join the application.
   participated have a red text color.}
 \label{fig:friendsFilled}
 \end{figure}
+
 
 
  \begin{table}
@@ -1101,16 +1177,16 @@ Gabriel & 67& 1& 0 & 2 \\
 Paige & 16& 1& 0 & 4 \\
 David & 50& 1& 0 & 4 \\
 Julian & 207& 2& 0 & 2 \\
-Carlos & 3& 3& 0 & 4.75 \\
+Carlos & 3 & 3 & 0 & 4.75 \\
 Evan & 74& 3& 0 & 4.5 \\
 Sebastian & 47& 3& 0 & 4.41667 \\
 Xavier & 80& 0& 0 & 4 \\
 Evan & 157& 2& 0 & 3 \\
 Brody & 136& 2& 0 & 3 \\
-Luis & 60& 1& 0 & \\
+Luis & 60& 1& 0 & 0\\
 Allison & 13& 0& 0 & 2.5 \\
-Tyler & 229& 0& 0 & \\
-Emily & 53& 0& 0 & \\
+Tyler & 229& 0& 0 & 0\\
+Emily & 53& 0& 0 & 0\\
 Khloe & 78& 1& 0 & 4 \\
 Katelyn & 167& 1& 0 & 2 \\
 Kaitlyn & 10& 1& 0 & 3 \\
@@ -1153,13 +1229,14 @@ Number of app friends & Occurrences \\
 \begin{table}
 \label{tab:scorespread}
 \begin{tabular}{c c}
-Spread to & Average score \\
-1&	2.75 \\
-2&	3.96 \\
-3&	3 \\
+Spread to & Concerned People & Average score \\ 
+1&	4 & 2.75 \\
+2&	3&3.96 \\
+3&	1&3 \\
 \end{tabular}
 \caption{Table details the average score of people who spread the
-  application to one, two, or three users.}
+  application to one, two, or three users, as well as the number of
+  concerned people.}
 \end{table}
 
 \begin{table}
