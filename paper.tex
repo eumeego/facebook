@@ -192,10 +192,10 @@ attributes. The tool allows for output of aspects of the internal graph
 in DOT-language, and export of metrics to CSV, too. 
 
 Results show that participants who connect the network of existing
-users to a new one often achieved a relatively high score in the quiz. New
-participants often had strong connections to the network of people who
-already participated. Indeed, the number of friends did not seem to make
-users more or less likely to gather new participants for the quiz.
+users to a new one often achieve a comparatively high score in the
+quiz. In the most cases, new participants have strong relations to the network of people who
+already participated. Indeed, the number of friends does not seem to
+have any effect on whether a user gathers new participants for the quiz.
 \end{abstract}
 
 \begin{keyword}
@@ -220,64 +220,66 @@ Facebook, Spreading of Applications, Social Network, data mining, social graph
 
 \section{Introduction}
 \label{sec:introduction}
-Founded in 2004, Facebook\footnote{www.facebook.com} has
+Founded in 2004 Facebook\footnote{www.facebook.com} has
 become a social network currently used by more than 600 million people
-all over the world\cite{facebook500}. Since 2007, Facebook provides an API permitting
-third party developers to embed their own applications in
+all over the world\cite{facebook500}. Since 2007, Facebook provides an API, permitting
+third party developers to embed their own applications into
 Facebook\footnote{http://developers.facebook.com/blog/archive}.
-Subsequent to the F8 conference in April, 2010, Facebook simplified
+Subsequent to the F8 conference in April, 2010, Facebook simplifies
 access to its social graph by allowing
 external websites for integration in their social graph through Open
-Graph Protocol\cite{facebookStats} . 
+Graph Protocol.\cite{facebookStats} 
 
 Due to integration in Facebook's social graph, third party
 applications not only spare user authentication procedures, but can also access
-extracts of Facebook's social graph, too. These information provided
-by Facebook detail a user's friend list, basic information, and
-further data to which access has to be granted by access tokens
+extracts of Facebook's social graph, too. These information detail a
+user's friend list, basic information, and 
+further data. Access to these data has to be granted by access tokens
 \footnote{http://developers.facebook.com/docs/authentication/}. Thus,
 applications let Facebook's social graph enlarge and make people
-spend more time of Facebook. In addition, application developers
-can spread their application virally through appearance in news
-streams, and collect useful information about the social network of
-their users, too.
+spend more time on Facebook. In addition, application developers
+can spread their application virally in news
+streams, and thereby they collect useful information about the social network of
+their users.
 
-Statistics show development of Facebook applications being very
-attractive nowadays. Until October, 2009, 
-over 350 000 apps had been seen on Facebook \cite{facebookBlog}.
-According to current statistics, about 20 million applications are
-installed per day, and ten thousand new websites integrate with
-Facebook every day, too. \cite{facebookStats} 
+Statistics show that the development of Facebook applications is becoming more
+and more popular. Until October 2009, 
+over three hundred fifty thousand applications have appeared on Facebook \cite{facebookBlog}.
+According to current statistics about twenty million applications are
+installed every day, and ten thousand new websites integrate with
+Facebook every day. \cite{facebookStats} 
 
-This paper investigates the process of spreading of applications on
-Facebook by focusing on the show case of a quiz asking users five randomly
+This paper investigates the way applications spread on
+Facebook. For this purpose, a quiz was built asking users five randomly
 selected questions about dentistry health facts. User data are
-collected in a MySQL database, and evaluation of the data is
-accomplished by the outputs of a tool maintaining an internal representation of the extract of Facebook's
+collected in a MySQL database. The Evaluation of the data is
+accomplished through the output of a tool which maintains an internal
+representation of the extract of Facebook's 
 social graph the application is allowed to access.
 
-The tool allows for output of graphs in \ac{dot} language and output of
-metrics as \ac{csv}. The graphs the tool can output detail how the application
-spreads, and allows for labelling of people (nodes) which connect the
-network of existing user to new networks. The metrics detail with how
-many people users who participated are friends, which score they had,
-and to how many new people they could have spread the application.
+The tool allows for the output of graphs in \ac{dot} language and the output of
+metrics as \ac{csv}. The graphs the tool puts out detail how the application
+spreads, and allow for labelling of people (nodes) that connect the
+network of existing user to new networks. The metrics detail the
+number of friends users have, the average score,
+and finally, the amount of users gained through the participant.
 
 In the first section, basic information about Facebook's social graph,
 and integration of applications is
 given. In the next section, the methodology is described by detailing
-the quiz and its building, as well as the tool for data evaluation. Section
+the quiz and its implementation, as well as a tool created for data
+evaluation. Section 
 \ref{sec:results} presents the results, and in section
-\ref{sec:discussion} and \ref{sec:outlook}, a discussed follows. Section
+\ref{sec:discussion}, a discussion follows. Section
 \ref{sec:conclusion} concludes the paper by summing up the results,
-and giving an outlook for further research, too.
+and giving an outlook on further research.
 
 
 \section{Foundations}
 \label{sec:background}
 This section details concepts from Facebook, basics about the
-\ac{DOT} language, and at least, it defines the metrics the tool
-explained in section \ref{sec:methodology} can output. Facebook's
+\ac{dot} language, and finally, it defines the metrics the
+data-evaluation tool (see section \ref{sec:methodology}) can put out. Facebook's
 social graph concept is explained in 
 section \ref{sec:social-graph}, section \ref{sec:integr-appl-with}
 describes how applications can be integrated with Facebook, and
@@ -1004,11 +1006,21 @@ install the application.
 
 \section{Conclusion and Outlook}
 \label{sec:conclusion}
-This research indicates, that their is not just one default pattern
-after which applications spread on Facebook. Instead, several facts
-seem to influence this effect. On the one hand, the topic of an
-application and an applications type hit the interest of specific
-people. Furthermore, there are often 
+This research indicates that no default patterns exist describing the 
+spreading of applications on Facebook. Instead, a variety of
+factors seems to contribute to the investigated process. On the one
+hand, the application's topic limits the target group
+automatically. 
+
+Beside the 
+applications topic, which limits the target group to people naturally, 
+
+
+seem to influence this effect: On the one hand, the chosen topic of an
+application 
+people. On the other hand, their are factors such as the number of 
+
+Furthermore, there 
 
 . Oftentimes, people say that they don't want to
 make a worse impression on Facebook, and this is also reflected in the
@@ -1121,19 +1133,19 @@ more likely to join the application.
 % \label{fig:invite}
 % \end{figure}
 
-\begin{figure}
-  \includegraphics[width=5in]{../img/friendsScored.png}
-\caption{Figure shows all users stored in the database. Users who
-  participated have a red text color.}
-\label{fig:friendsScored}
-\end{figure}
+% \begin{figure}
+%   \includegraphics[width=5in]{../img/friendsScored.png}
+% \caption{Figure shows all users stored in the database. Users who
+%   participated have a red text color.}
+% \label{fig:friendsScored}
+% \end{figure}
 
-\begin{figure}
-  \includegraphics[width=5in]{../img/friendsFilled.png}
-\caption{Figure shows all users stored in the database. Users who
-  participated have a red text color.}
-\label{fig:friendsFilled}
-\end{figure}
+% \begin{figure}
+%   \includegraphics[width=5in]{../img/friendsFilled.png}
+% \caption{Figure shows all users stored in the database. Users who
+%   participated have a red text color.}
+% \label{fig:friendsFilled}
+% \end{figure}
 
 
 
